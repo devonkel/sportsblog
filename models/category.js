@@ -22,6 +22,16 @@ module.exports.getCategories = function(callback, limit){
 };
 
 //Get single category
+module.exports.getCategoryById = function(id, callback){
+	Category.findById(id, callback);	
+};
+
+//Add a category
 module.exports.addCategory = function(category, callback){
 	Category.create(category, callback);
+};
+
+//Update a category
+module.exports.updateCategory = function(query, update, options, callback){
+	Category.findOneAndUpdate(query, update, options, callback);
 };
