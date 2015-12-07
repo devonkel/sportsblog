@@ -1,14 +1,33 @@
 var express = require('express');
 var router = express.Router();
 
+Article = require('../models/article.js');
+
 /* Articles page. */
 router.get('/', function(req, res, next) {
-  res.render('articles', { title: 'Articles' });
+	Article.getArticles(function(err, articles){
+		if(err){
+			res.send(err);
+		} else {
+			res.render('articles', { 
+				title: 'All Articles',
+				articles: articles
+			});
+		}
+	});
 });
 
 /* Show article. */
 router.get('/show/:id', function(req, res, next) {
-  res.render('article');
+	Article.getArticleById(req.params.id, function(err, article){
+		if(err){
+			res.send(err);
+		} else {
+			res.render('article', { 
+				article: article
+			});
+		}
+	});
 });
 
 router.get('/category/:category_id', function(req, res, next) {
