@@ -1,21 +1,51 @@
 extends layout
 
 block content
-  h1
-     | #{article.title}
-    header.intro-header(style="background-image: url('../../images/post-bg.jpg')")
-      .container
-        .row
-          .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
-            .post-heading
-              h2.subheading #{article.subtitle}
-              h3.post-subtitle Category: #{article.category}
-              span.meta
-                | Posted by #{article.author} on #{moment(article.created_dt).format('DD-MMM-YYYY, h:mm:ss A')}
+  articleTitle
+    .container
+      header.intro-header(style="color: white; background-image: url('/images/post-bg2.jpg')")
+        h1 #{article.title}
+          .row
+            .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+              .post-heading
+                ul.errors
+                  if errors
+                    each error, i in errors
+                      li.alert.alert-danger #{error.msg}
+              .post-heading
+                h2.subheading #{article.subtitle}
+                h4.post-subtitle Category: #{article.category}
+                span.meta
+                  | Posted by #{article.author} on #{moment(article.created_dt).format('DD-MMM-YYYY, h:mm:ss A')}
 
-    article
-      .container
-        .row
-          .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
-            .post-heading
-              div #{article.body}
+  article
+    .container
+      .row
+        .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+          .post-heading
+            div #{article.body}
+            br
+            h3 Comments
+              each comment, i in article.comments
+                div.well
+                  h4 #{i+1}. #{comment.comment_subject}
+                  h5 #{comment.comment_author} < #{comment.comment_email} >
+                  h5 #{comment.comment_body}
+            br
+            h4 Add a comment
+            p
+              form.comment-form(method='post', action='/articles/comments/add/#{article._id}', id=comments)
+                input(name='article_id', type='hidden', value='#{article._id}')
+                .form-group
+                  label Subject
+                  input.form-control(type='text', name='comment_subject')
+                .form-group
+                  label Name
+                  input.form-control(tyep='text', name='comment_author')
+                .form-group
+                  label Email
+                  input.form-control(type='email', name='comment_email')
+                .form-group
+                  label Body
+                  textarea.form-control(name='comment_body', id='body')
+                input.btn.btn-default(name='submit', type='submit', value='Add Comment')

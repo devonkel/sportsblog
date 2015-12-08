@@ -131,6 +131,59 @@ router.post('/edit/:id', function (req, res){
 	}
 });
 
+router.post('/comments/add/:id', function (req, res, next){
+	req.checkBody('comment_subject', 'Comment Subject is required.').notEmpty();
+	req.checkBody('comment_author', 'Comment Author is required.').notEmpty();
+	req.checkBody('comment_body', 'Comment Body is required.').notEmpty();
+	req.checkBody('comment_email', 'Comment Email is required.').notEmpty();
+
+	var errors = req.validationErrors();
+	if(errors) {
+		Article.getArticleById([req.params.id], function (err, article){
+			if(err){
+				console.log(err);
+				res.send(err);
+			} else {
+				res.render('article',{
+					"errors": errors,
+					"article": article, 
+					"comment_subject": req.body.comment_subject,
+					"comment_author": req.body.comment_author,
+					"comment_body": req.body.comment_body,
+					"comment_email": req.body.comment_email
+				});
+			}
+		});
+	} else {
+		var article = new Article();
+		var query = {_id: [req.params.id]};
+		var comment = {
+			"comment_subject": req.body.comment_subject,
+			"comment_author": req.body.comment_author,
+			"comment_body": req.body.comment_body,
+			"comment_email": req.body.comment_email
+		};
+
+		Article.addComment(query, comment, function (err, article) {
+			if(err) {
+				res.send(err);
+			} else {
+				Article.getArticleById([req.params.id], function (err2, article){
+					if(err2){
+						console.log(err2);
+						res.send(err2);
+					} else {
+						res.render('article',{
+							"article": article,
+							successMsg: 'Your comment was added.'
+						});
+					}
+				});
+			}
+		});
+	}
+});
+
 router.delete('/delete/:id', function (req, res){
 	var query = {_id: [req.params.id]};
 	console.log('+++ About to delete Article with ID: ', query);

@@ -8,6 +8,8 @@
   background: #000 !important
 }
 
+.
+
 .spacer{
   margin-top: 40px;
   height: 60px;
@@ -161,7 +163,7 @@ hr.small {
   .intro-header .site-heading,
   .intro-header .post-heading,
   .intro-header .page-heading {
-    padding: 150px 0;
+    padding: 10px;
   }
 }
 .intro-header .site-heading,
