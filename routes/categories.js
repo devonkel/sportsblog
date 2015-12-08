@@ -4,7 +4,7 @@ var router = express.Router();
 Category = require('../models/category.js');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
 	Category.getCategories(function(err, categories){
 		if(err) {
 			res.send(err);
@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-router.post('/add', function(req, res){
+router.post('/add', function (req, res){
 	req.checkBody('title', 'Title is required.').notEmpty();
 	req.checkBody('description', 'Description is required.').notEmpty();
 
@@ -32,7 +32,7 @@ router.post('/add', function(req, res){
 		category.title = req.body.title;
 		category.description = req.body.description;
 
-		Category.addCategory(category, function(err, category){
+		Category.addCategory(category, function (err, category){
 			if(err) {
 				res.send(err);
 			} else {
@@ -44,7 +44,7 @@ router.post('/add', function(req, res){
 	}
 });
 
-router.post('/edit/:id', function(req, res){
+router.post('/edit/:id', function (req, res){
 	req.checkBody('title', 'Title is required.').notEmpty();
 	req.checkBody('description', 'Description is required.').notEmpty();
 
@@ -59,7 +59,7 @@ router.post('/edit/:id', function(req, res){
 		var query = {_id: [req.params.id]};
 		var update = {title: req.body.title, description: req.body.description};
 
-		Category.updateCategory(query, update, {}, function(err, category){
+		Category.updateCategory(query, update, {}, function (err, category){
 			if(err) {
 				res.send(err);
 			} else {
@@ -71,9 +71,9 @@ router.post('/edit/:id', function(req, res){
 	}
 });
 
-router.delete('/delete/:id', function(req, res){
-	var query = {_id: [required.params.id]};
-	Category.remove(query, function(err){
+router.delete('/delete/:id', function (req, res){
+	var query = {_id: [req.params.id]};
+	Category.remove(query, function (err){
 		if(err) {
 			res.send(err);
 		} else {

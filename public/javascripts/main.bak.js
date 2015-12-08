@@ -10,7 +10,7 @@ $(document).ready(function(){
 			success: function (response){
 				$target.parent().parent().remove();
 				alert('Category Removed.');
-				window.location.href='/manage/categories'
+				window.location.href='/manage/categories';
 			},
 			error: function (error){
 				alert('--- ERROR --- (main.js) (.category-delete) '+error);
@@ -29,7 +29,7 @@ $(document).ready(function(){
 			success: function(response){
 				$target.parent().parent().remove();
 				alert('Article Removed.');
-				window.location.href='/manage/articles'
+				window.location.href='/manage/articles';
 			},
 			error: function (error){
 				alert('--- ERROR --- (main.js) (.article-delete) '+error);

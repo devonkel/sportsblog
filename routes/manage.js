@@ -2,10 +2,21 @@ var express = require('express');
 var router = express.Router();
 
 Category = require('../models/category.js');
+Article = require('../models/article.js');
+
 
 /* GET Manage Articles page. */
 router.get('/articles', function(req, res, next) {
-  res.render('manage_articles', { title: 'Manage Articles' });
+	Article.getArticles(function(err, articles){
+		if(err){
+			res.send(err);
+		} else {
+			res.render('manage_articles', 
+				{ title: 'Manage Articles' ,
+				articles: articles
+			});
+		}
+	});
 });
 
 /* GET Manage Categories page. */
@@ -24,7 +35,22 @@ router.get('/categories', function(req, res, next) {
 
 /* GET Add Articles page. */
 router.get('/articles/add', function(req, res, next) {
-  res.render('add_article', { title: 'Create Articles' });
+	var article = new Article();
+	article.title = '';
+	article.subtitle = '';
+	article.author = '';
+	article.body ='';
+	Category.getCategories(function(err, categories){
+		if(err) {
+			res.send(err);
+		} else {
+			res.render('add_article', {
+				title: 'Add Article',
+				article: article,
+				categories: categories
+			})
+		}
+	});
 });
 
 /* GET Add Category page. */
@@ -32,9 +58,24 @@ router.get('/categories/add', function(req, res, next) {
   res.render('add_category', { title: 'Create Category' });
 });
 
-/* GET Edit Articles page. */
+/* GET Edit Article page. */
 router.get('/articles/edit/:id', function(req, res, next) {
-  res.render('edit_article', { title: 'Edit Article' });
+  	Article.getArticleById([req.params.id], function(err, article){
+		if(err) {
+			res.send(err);
+		} else {
+			Category.getCategories(function(err2, categories){
+			if(err2) {
+				res.send(err2);
+			} else {
+				res.render('edit_article', {
+					title: 'Edit Article',
+					article: article,
+					categories: categories
+				});
+			}});
+		}
+	});
 });
 
 /* GET Edit Category page. */

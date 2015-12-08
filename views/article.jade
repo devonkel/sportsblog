@@ -2,13 +2,12 @@ extends layout
 
 block content
   h1
-     | Space Article
+     | #{article.title}
     header.intro-header(style="background-image: url('../../images/post-bg.jpg')")
       .container
         .row
           .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
             .post-heading
-              h1 #{article.title}
               h2.subheading #{article.subtitle}
               h3.post-subtitle Category: #{article.category}
               span.meta

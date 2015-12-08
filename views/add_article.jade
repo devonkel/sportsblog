@@ -6,26 +6,31 @@ block content
     .row
       .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
         h1=title
+        ul.errors
+          if errors
+            each error, i in errors
+              li.alert.alert-danger #{error.msg}
         form(method='post', action='/articles/add')
           .form-group
             label Title:
-            input.form-control(name='title', type='text')
+            input.form-control(name='title', type='text', value='#{article.title}')
           .form-group
             label Subtitle:
-            input.form-control(name='subtitle', type='text')
+            input.form-control(name='subtitle', type='text', value='#{article.subtitle}')
           .form-group
             label Category:
             select.form-control(name='category')
-              option(value='1') CATEGORY
-              option(value='1') CATEGORY
-              option(value='1') CATEGORY
-              option(value='1') CATEGORY
+              each category, i in categories
+                - if(category.title == article.category)
+                  option(value='#{category.title}' selected) #{category.title}
+                - else
+                  option(value='#{category.title}') #{category.title}
           .form-group
             label Author:
-            input.form-control(name='author', type='text')
+            input.form-control(name='author', type='text', value='#{article.author}')
           .form-group
             label Body
-            textarea.form-control(name='body', id='article_body')
+            textarea.form-control(name='body', id='body') #{article.body}
               if body
                 =body
           input.btn.btn-primary(name='submit', type='submit', value='Save')

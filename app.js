@@ -12,6 +12,7 @@ var flash = require('connect-flash');
 var mongoose = require('mongoose');
 //var Category = mongoose.model('Category')
 var Category = require('./models/category.js');
+var Article = require('./models/article.js');
 mongoose.connect('mongodb://localhost/sportsblog');
 var db = mongoose.connection;
 
